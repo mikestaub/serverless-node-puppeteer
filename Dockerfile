@@ -45,10 +45,7 @@ RUN apt-get install -yq \
   lsb-release \
   xdg-utils \
   wget
-
 RUN apt-get autoremove -y
-RUN yarn global add puppeteer serverless
-RUN yarn cache clean
 RUN rm -Rf /tmp/* /var/lib/apt/lists/*
 
-ENV NODE_PATH /usr/local/share/.config/yarn/global/node_modules
+RUN npm install --global puppeteer serverless
