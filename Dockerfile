@@ -47,5 +47,3 @@ RUN apt-get install -yq \
   wget
 RUN apt-get autoremove -y
 RUN rm -Rf /tmp/* /var/lib/apt/lists/*
-
-RUN npm install --global puppeteer serverless
