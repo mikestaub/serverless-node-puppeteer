@@ -1,7 +1,4 @@
-# use the latest node version for lambda:
-# https://docs.aws.amazon.com/lambda/latest/dg/current-supported-versions.html
-
-FROM node:6.10.3
+FROM node:8.10.0
 
 # install libs for headless chrome: 
 # https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md#chrome-headless-doesnt-launch
