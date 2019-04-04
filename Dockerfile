@@ -1,8 +1,13 @@
-FROM node:8.10.0
+FROM node:8.10
+
+# TODO: workaround while CDN is down, should be able to just run update
+RUN echo "deb [check-valid-until=no] http://cdn-fastly.deb.debian.org/debian jessie main" > /etc/apt/sources.list.d/jessie.list
+RUN echo "deb [check-valid-until=no] http://archive.debian.org/debian jessie-backports main" > /etc/apt/sources.list.d/jessie-backports.list
+RUN sed -i '/deb http:\/\/deb.debian.org\/debian jessie-updates main/d' /etc/apt/sources.list
+RUN apt-get -o Acquire::Check-Valid-Until=false update
 
 # install libs for headless chrome: 
 # https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md#chrome-headless-doesnt-launch
-RUN apt-get update
 RUN apt-get install -yq \
   gconf-service \
   libasound2 \
@@ -42,6 +47,11 @@ RUN apt-get install -yq \
   lsb-release \
   xdg-utils \
   wget
+
 RUN apt-get autoremove -y
 RUN rm -Rf /tmp/* /var/lib/apt/lists/*
-RUN npm install --global serverless@1.29.2 yarn
+
+RUN npm install --global serverless@1.40.0
+
+# Remove the version of yarn that is coming with node:8 & Install latest yarn
+RUN rm -f /usr/local/bin/yarn && npm install --global yarn
