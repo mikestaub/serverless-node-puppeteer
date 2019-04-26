@@ -42,16 +42,21 @@ RUN apt-get install -yq \
   libxtst6 \
   ca-certificates \
   fonts-liberation \
-  libappindicator1 \
+  libappindicator3-1 \
   libnss3 \
   lsb-release \
   xdg-utils \
   wget
 
+RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+RUN dpkg -i google-chrome-stable_current_amd64.deb
+
 RUN apt-get autoremove -y
 RUN rm -Rf /tmp/* /var/lib/apt/lists/*
 
 RUN npm install --global serverless@1.40.0
+
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 
 # Remove the version of yarn that is coming with node:8 & Install latest yarn
 RUN rm -f /usr/local/bin/yarn && npm install --global yarn
