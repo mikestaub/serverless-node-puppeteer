@@ -1,12 +1,8 @@
-FROM node:8.10
+FROM node:12.20.1
 
-# TODO: workaround while CDN is down, should be able to just run update
-RUN echo "deb [check-valid-until=no] http://cdn-fastly.deb.debian.org/debian jessie main" > /etc/apt/sources.list.d/jessie.list
-RUN echo "deb [check-valid-until=no] http://archive.debian.org/debian jessie-backports main" > /etc/apt/sources.list.d/jessie-backports.list
-RUN sed -i '/deb http:\/\/deb.debian.org\/debian jessie-updates main/d' /etc/apt/sources.list
-RUN apt-get -o Acquire::Check-Valid-Until=false update
+RUN apt-get update
 
-# install libs for headless chrome: 
+# install libs for headless chrome:
 # https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md#chrome-headless-doesnt-launch
 RUN apt-get install -yq \
   gconf-service \
@@ -54,9 +50,9 @@ RUN dpkg -i google-chrome-stable_current_amd64.deb
 RUN apt-get autoremove -y
 RUN rm -Rf /tmp/* /var/lib/apt/lists/*
 
-RUN npm install --global serverless@1.40.0
+RUN npm install --global serverless@1.62.0
 
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 
-# Remove the version of yarn that is coming with node:8 & Install latest yarn
-RUN rm -f /usr/local/bin/yarn && npm install --global yarn
+# Remove the version of yarn that is coming with node:12 & Install latest yarn
+RUN unlink /usr/local/bin/yarn && unlink /usr/local/bin/yarnpkg && npm install --global yarn
